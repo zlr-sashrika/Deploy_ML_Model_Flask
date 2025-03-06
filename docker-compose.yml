@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  gpt-db:
+    image: postgres:17.2
+    container_name: gpt-db
+    restart: always
+    ports:
+      - "5532:5432"
+    volumes:
+      - gpt-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=gptdev
+      - POSTGRES_USER=gptuser
+      - POSTGRES_PASSWORD=gptpass
+
+  pgvector:
+    image: phidata/pgvector:16
+    container_name: pgvector
+    restart: always
+    ports:
+      - "5632:5432"
+    environment:
+      - POSTGRES_DB=gptdev
+      - POSTGRES_USER=gptuser
+      - POSTGRES_PASSWORD=gptpass
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pgvolume:/var/lib/postgresql/data
+
+  # Uncomment this section to build and run the service locally
+  # my-service:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: my-service
+  #   restart: always
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - OPENAI_API_KEY=<change-me>
+  #     - POSTGRES_URL=postgresql://gptuser:gptpass@gpt-db:5432/gptdev?sslmode=disable
+  #     - CREATE_SCHEMA=true
+  #     - VECTOR_DB_URL=postgresql+psycopg://gptuser:gptpass@pgvector:5432/gptdev
+  #     - MESSAGE_HISTORY_LIMIT=25
+  #     - MESSAGE_HISTORY_LIMIT_AFTER_SUMMARY=10
+  #     - BASIC_AUTH_USERNAME=Admin_7x!pG@wZ
+  #     - BASIC_AUTH_PASSWORD=G_3v@pN9z@TqX8Kd
+
+volumes:
+  gpt-db-data:
+  pgvolume:
