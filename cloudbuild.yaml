@@ -1,0 +1,7 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/zelarsoft-data-engineering/ml-oops:latest', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/zelarsoft-data-engineering/ml-oops:latest']
+images:
+  - 'us-central1-docker.pkg.dev/zelarsoft-data-engineering/ml-oops:latest'
