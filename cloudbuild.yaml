@@ -1,0 +1,7 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/zelarsoft-data-engineering/ml-oops/ml-test-9347', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/zelarsoft-data-engineering/ml-oops/ml-test-9347']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args: ['gcloud', 'run', 'deploy', 'ml-oopss-test0', '--image', 'us-central1-docker.pkg.dev/zelarsoft-data-engineering/ml-oops/ml-test-9347', '--region', 'us-central1', '--platform', 'managed']
