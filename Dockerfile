@@ -1,20 +1,30 @@
-# Use the official Python image from the Docker Hub
-FROM python:3.9-slim
+# Use Python 3.8 slim base image
+FROM python:3.8-slim
 
-# Set the working directory in the container
+# Set working directory in container
 WORKDIR /app
 
-# Copy the requirements file into the container
+# Copy requirements file
 COPY requirements.txt .
 
-# Install the dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container
+# Install additional required packages that aren't in requirements.txt
+RUN pip install numpy pandas scikit-learn matplotlib
+
+# Copy the entire application
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 5000
+# Train the model before running the app
+RUN python model.py
 
-# Define the command to run the application
+# Set environment variables
+ENV FLASK_APP=application.py
+ENV FLASK_ENV=production
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the application
 CMD ["python", "application.py"]
